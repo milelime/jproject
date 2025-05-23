@@ -1,0 +1,52 @@
+.TH JPROJECT 1 "May 2025" "1.0" "Java Project Helper Script"
+.SH NAME
+jproject \- manage basic Eclipse-compatible Java projects from the terminal
+.SH SYNOPSIS
+.B jproject
+[\fICOMMAND\fR]
+.SH DESCRIPTION
+\fBjproject\fR is a simple Bash utility that helps create, compile, and manage Java projects compatible with Eclipse, directly from the terminal. It can generate project structure, classes, and interfaces, as well as compile and run your Java code.
+
+.SH COMMANDS
+.TP
+.B project
+Create a new Java project directory with Eclipse-compatible files (.project and .classpath), `src` and `bin` folders, and optional Git initialization.
+.TP
+.B class
+Prompt for a fully qualified class name and generate a new Java class file in the correct package directory.
+.TP
+.B interface
+Same as \fBclass\fR, but creates a Java interface instead.
+.TP
+.B compile
+Compile all `.java` files in the `src` directory into the `bin` directory.
+.TP
+.B run
+Compile the project and prompt for a main class to run via `java`.
+.TP
+.B test
+Placeholder for future testing functionality.
+.TP
+.B help
+Display usage information.
+
+.SH EXAMPLES
+.TP
+Create a new project:
+.B jproject project
+.TP
+Create a class:
+.B jproject class
+.TP
+Compile and run your program:
+.B jproject run
+
+.SH REQUIREMENTS
+You must have \fBbash\fR, \fBjavac\fR, and \fBjava\fR installed and available in your PATH.
+
+.SH AUTHOR
+Written by Alexey Ayzin.
+
+.SH LICENSE
+MIT License.
+
