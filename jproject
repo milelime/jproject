@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+set -e
+
+function usage() {
+    echo "Usage: $0 <command> [args]
+
+Commands:
+  project     Create a new Eclipse-compatible Java project
+  class       Create a new Java class
+  interface   Create a new Java interface
+  test        Run tests (placeholder for now)
+  compile     Compile the project
+  run         Compile and run the main class
+
+Examples:
+  $0 project
+  $0 class
+  $0 interface
+  $0 compile
+  $0 run
+"
+}
+
+function init_project() {
+    read -rp "Enter project name: " PROJECT_NAME
+    mkdir -p "$PROJECT_NAME/src" "$PROJECT_NAME/bin"
+    cd "$PROJECT_NAME" || exit
+
+    git init > /dev/null
+    read -rp "Enter remote Git URL (leave blank to skip): " REMOTE_URL
+    [[ -n "$REMOTE_URL" ]] && git remote add origin "$REMOTE_URL"
+
+    cat > .project <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+    <name>$PROJECT_NAME</name>
+    <comment></comment>
+    <projects></projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name>
+            <arguments></arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.jdt.core.javanature</nature>
+    </natures>
+</projectDescription>
+EOF
+
+    cat > .classpath <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry kind="output" path="bin"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>
+EOF
+
+    echo "Project '$PROJECT_NAME' created."
+}
+
+function create_type() {
+    local TYPE="$1"
+    read -rp "Enter name (e.g., MyClass or com/example/MyClass): " NAME
+    PACKAGE_PATH=$(dirname "$NAME" | sed 's|/|.|g')
+    BASENAME=$(basename "$NAME")
+    SRC_PATH="src/$(dirname "$NAME")"
+    mkdir -p "$SRC_PATH"
+
+    cat > "$SRC_PATH/$BASENAME.java" <<EOF
+${PACKAGE_PATH:+package $PACKAGE_PATH;}
+
+public $TYPE $BASENAME {
+    // TODO: Implement
+}
+EOF
+
+    echo "$TYPE '$BASENAME' created at '$SRC_PATH'."
+}
+
+function compile_project() {
+    mkdir -p bin
+    find src -name "*.java" > sources.txt
+    javac -d bin @sources.txt
+    echo "Compilation complete."
+}
+
+function run_project() {
+    compile_project
+    read -rp "Enter fully qualified class to run (e.g., com.example.Main): " MAIN_CLASS
+    java -cp bin "$MAIN_CLASS"
+}
+
+function test_project() {
+    echo "Test system not yet implemented."
+}
+
+# === Command Dispatcher ===
+COMMAND="$1"
+shift || true
+
+case "$COMMAND" in
+    project) init_project ;;
+    class) create_type "class" ;;
+    interface) create_type "interface" ;;
+    compile) compile_project ;;
+    run) run_project ;;
+    test) test_project ;;
+    *) usage ;;
+esac
+
