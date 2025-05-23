@@ -30,8 +30,6 @@ Save the accompanying jproject.1 man page in your project folder.
 #### Copy it to the appropriate man section directory
 
 ```bash
-Copy
-Edit
 sudo mkdir -p /usr/local/share/man/man1
 sudo cp jproject.1 /usr/local/share/man/man1/
 ```
@@ -39,16 +37,12 @@ sudo cp jproject.1 /usr/local/share/man/man1/
 #### Update the man database
 
 ```bash
-Copy
-Edit
 sudo mandb
 ```
 
 ### 3. Verify installation
 
 ```bash
-Copy
-Edit
 which jproject
 man jproject
 ```
@@ -56,8 +50,6 @@ man jproject
 ## Usage
 
 ```bash
-Copy
-Edit
 jproject <command> [args]
 ```
 
@@ -75,8 +67,6 @@ jproject <command> [args]
 ## Examples
 
 ```bash
-Copy
-Edit
 jproject project
 jproject class
 jproject interface
